@@ -184,7 +184,7 @@ resource "aws_ecs_task_definition" "medusa_task" {
     "environment": [
       {
         "name": "DATABASE_URL",
-        "value": "postgres://medusa_user:${var.db_password}@${aws_db_instance.medusa_db.endpoint}:5432/medusadb"
+        "value": "postgres://medusa:${var.db_password}@${aws_db_instance.medusa.endpoint}:5432/medusa"
       }
     ]
   }
@@ -218,13 +218,13 @@ resource "aws_ecr_repository" "medusa_ecr_repo" {
 }
 
 # RDS PostgreSQL Instance
-resource "aws_db_instance" "medusa_db" {
+resource "aws_db_instance" "medusa" {
   allocated_storage    = 20
   engine               = "postgres"
   engine_version       = "13"
   instance_class       = "db.t3.micro"
-  db_name              = "medusadb"
-  username             = "medusa_user"
+  db_name              = "medusa"
+  username             = "medusa"
   password             = var.db_password
   publicly_accessible  = false
   vpc_security_group_ids = [aws_security_group.rds_sg.id]
